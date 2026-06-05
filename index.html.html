@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인간중심상담 | 개념요약 & 연습문제</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  :root {
+    --cream:#faf8f3; --paper:#fffdf9; --ink:#171717; --muted:#76716a; --line:#e6ded2;
+    --accent:#6b7a6b; --accent2:#8b7355; --soft:#eef2ed; --soft2:#f1ebe2; --wrong:#b0443e;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Noto Sans KR', sans-serif; background:var(--cream); color:var(--ink); line-height:1.75; font-size:14px; }
+  .wrap { max-width:980px; margin:0 auto; padding:24px 16px 80px; }
+  header.hero { padding:26px 0 18px; border-bottom:2px solid var(--ink); margin-bottom:16px; }
+  .eyebrow { font-size:11px; font-weight:700; color:var(--muted); letter-spacing:.16em; text-transform:uppercase; margin-bottom:6px; }
+  h1 { font-family:'Noto Serif KR', serif; font-size:28px; line-height:1.35; margin-bottom:8px; }
+  .desc { color:var(--muted); font-size:13px; }
+  .tabs { position:sticky; top:0; z-index:20; display:flex; gap:8px; padding:10px 0; background:var(--cream); border-bottom:1px solid var(--line); }
+  .tab-btn { flex:1; border:1px solid var(--line); background:#fff; padding:12px 10px; border-radius:999px; font-weight:700; cursor:pointer; color:var(--muted); font-family:'Noto Sans KR', sans-serif; }
+  .tab-btn.active { color:#fff; background:var(--accent); border-color:var(--accent); }
+  .panel { display:none; padding-top:18px; }
+  .panel.active { display:block; }
+  .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px; }
+  .btn { border:1px solid var(--ink); background:var(--ink); color:#fff; border-radius:8px; padding:8px 13px; font-weight:700; font-family:'Noto Sans KR', sans-serif; cursor:pointer; }
+  .btn.sub { background:transparent; color:var(--ink); }
+  .note { font-size:12px; color:var(--muted); }
+  .summary-card, .quiz-card { background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:18px; box-shadow:0 8px 24px rgba(0,0,0,.035); }
+
+  /* 개념요약 표 */
+  .summary-content { font-size:12px; }
+  .summary-content table { width:100%; border-collapse:collapse; margin-bottom:20px; table-layout:fixed; background:#fff; }
+  .summary-content th, .summary-content td { border:1px solid #777; padding:6px 8px; vertical-align:top; line-height:1.75; }
+  .summary-content .section-header { background:#3a3a3a; color:#fff; font-weight:700; font-size:13px; text-align:left; padding:8px; letter-spacing:.6px; }
+  .summary-content .cat-main { background:#6b7a6b; color:#fff; font-weight:700; font-size:11px; text-align:center; vertical-align:middle; width:8%; word-break:keep-all; }
+  .summary-content .cat-sub { background:#dde4dd; font-weight:700; font-size:11px; vertical-align:top; width:20%; word-break:keep-all; padding:6px 7px; }
+  .summary-content .cat-sub-en { font-weight:400; font-size:9px; display:block; color:#555; margin-top:1px; word-break:break-all; }
+  .summary-content .cat-content { background:#fff; font-size:12px; width:72%; }
+  .summary-content ul { padding-left:17px; margin:0; }
+  .summary-content li { margin-bottom:3px; }
+  .summary-content .hl, .summary-content .sub { font-weight:700; }
+  .summary-content .flow-box { border:1px solid #999; background:#f5f5f5; padding:8px 12px; margin-top:3px; font-size:11px; line-height:2; }
+
+  /* 연습문제 */
+  .quiz-top { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; color:var(--muted); font-size:12px; }
+  .progress { height:8px; background:var(--soft2); border-radius:99px; overflow:hidden; margin-bottom:16px; }
+  .progress span { display:block; height:100%; width:0; background:var(--accent); transition:width .2s; }
+  .qnum { font-family:'Noto Serif KR', serif; color:var(--accent2); font-weight:700; margin-bottom:8px; }
+  .question { font-size:17px; font-weight:700; line-height:1.65; margin-bottom:14px; white-space:pre-line; }
+  .box { background:var(--soft); border-left: none; padding:12px 14px; margin-bottom:14px; border-radius:8px; white-space:pre-line; font-size:14px; }
+  .options { display:flex; flex-direction:column; gap:8px; }
+  .opt { text-align:left; border:1px solid var(--line); background:#fff; border-radius:10px; padding:11px 12px; cursor:pointer; font-family:'Noto Sans KR', sans-serif; line-height:1.55; }
+  .opt:hover { border-color:var(--accent); }
+  .opt.correct { border-color:var(--accent); background:var(--soft); font-weight:700; }
+  .opt.wrong { border-color:var(--wrong); background:#fff2f1; }
+  .exp { display:none; margin-top:14px; padding:13px 14px; border-radius:10px; background:#fff8ee; border-left: none; white-space:pre-line; font-size:13px; }
+  .exp.show { display:block; }
+  .nav { display:flex; justify-content:space-between; gap:8px; margin-top:16px; }
+  .all-list { margin-top:24px; display:none; }
+  .all-list.show { display:block; }
+  .all-q { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+  .all-q h3 { font-size:14px; margin-bottom:8px; }
+  .answer { color:var(--wrong); font-weight:700; margin-top:8px; white-space:pre-line; }
+
+  @media (max-width:680px) {
+    h1 { font-size:23px; }
+    .summary-card, .quiz-card { padding:12px; border-radius:12px; }
+    .summary-content { font-size:10.5px; overflow-x:auto; }
+    .summary-content table { min-width:760px; }
+    .question { font-size:15px; }
+  }
+  @media print {
+    body { background:#fff; } .wrap { max-width:none; padding:0; } .tabs,.toolbar,.nav,.progress { display:none!important; }
+    .panel { display:block!important; page-break-after:always; } .summary-card,.quiz-card,.all-q { box-shadow:none; border:none; padding:0; }
+    .all-list { display:block!important; }
+  }
+</style>
+
+<style>
+/* 보기 박스 왼쪽 강조선 제거 */
+.choice-box,
+.option-box,
+.options-box,
+.view-box,
+.choices,
+.choice-list,
+.question-options,
+.q-options,
+.example-box,
+.problem-options {
+  border-left: none !important;
+  box-shadow: none !important;
+}
+.choice-box::before,
+.option-box::before,
+.options-box::before,
+.view-box::before,
+.choices::before,
+.choice-list::before,
+.question-options::before,
+.q-options::before,
+.example-box::before,
+.problem-options::before {
+  display: none !important;
+}
+</style>
+
+
+<style>
+/* 정답/해설/보기 박스 왼쪽 강조선 완전 제거 */
+.box,
+.exp,
+.answer,
+.all-q .answer {
+  border-left: none !important;
+  box-shadow: none !important;
+}
+.box::before,
+.exp::before,
+.answer::before,
+.all-q .answer::before {
+  display: none !important;
+}
+
+/* 선택 후에도 브라우저 기본 disabled 회색 처리 방지 */
+.opt:disabled {
+  opacity: 1 !important;
+  color: inherit !important;
+  cursor: default;
+}
+.opt.correct,
+.opt.correct:disabled {
+  border-color: var(--accent) !important;
+  background: var(--soft) !important;
+  color: var(--ink) !important;
+  font-weight: 700 !important;
+}
+.opt.wrong,
+.opt.wrong:disabled {
+  border-color: var(--wrong) !important;
+  background: #fff2f1 !important;
+  color: var(--wrong) !important;
+  font-weight: 700 !important;
+}
+</style>
+
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="eyebrow">Person-Centered Counseling · Carl Rogers</div>
+      <h1>인간중심상담 개념요약 & 연습문제</h1>
+      <p class="desc">권석만 · 현대 심리치료와 상담 이론 2판 | Gerald Corey · 심리상담과 치료의 이론과 실제 11판</p>
+    </header>
+
+    <nav class="tabs" aria-label="자료 탭">
+      <button class="tab-btn active" onclick="openTab('summary', this)">개념요약</button>
+      <button class="tab-btn" onclick="openTab('quiz', this)">연습문제</button>
+    </nav>
+
+    <section class="panel active" id="summary">
+      
+      <div class="summary-card"><div class="summary-content">
+<!-- ===== 1. 주요개념과 성격이론 ===== -->
+<table>
+  <colgroup><col style="width:8%"><col style="width:20%"><col style="width:72%"></colgroup>
+  <tbody>
+    <tr><td colspan="3" class="section-header">1. 주요개념과 성격이론</td></tr>
+
+    <!-- 1) 이론적 입장 -->
+    <tr>
+      <td class="cat-main" rowspan="3">1) 이론적 입장</td>
+      <td class="cat-sub">① 긍정적 인간관<br>인본주의 심리학</td>
+      <td class="cat-content">
+        <ul>
+          <li>Rogers의 인간중심치료는 <span class="hl">긍정적 인간관</span>에 근거하며 인본주의 심리학(humanistic psychology)의 중심 축을 이룸</li>
+          <li>1960년대 '제3의 심리학'으로 각광받음 — 정신분석과 행동주의에 대한 비판적 대안으로 등장</li>
+          <li><span class="sub">정신분석:</span> 인간을 성적·공격적 추동에 휘둘리는 수동적 존재로 간주</li>
+          <li><span class="sub">행동주의:</span> 환경에 의해 조작되는 로봇 같은 존재로 인식</li>
+          <li><span class="sub">인본주의:</span> 스스로 잠재력을 발현하며 성장하려는 건강한 동기를 지닌 존중받을 만한 존재</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">② 현상학적 입장<span class="cat-sub-en">Phenomenological Approach</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>내담자의 <span class="hl">무의식 세계보다 의식적 경험</span>, 객관적 현실보다 <span class="hl">주관적 현실</span>을 중시</li>
+          <li>개인의 행동을 이해하려면 그가 자신과 세계를 어떻게 주관적으로 인식하는지 파악하는 것이 필수적</li>
+          <li>인간은 유능하고 강인한 존재로서 잠재 가능성을 실현시킬 수 있는 능력을 지님</li>
+          <li>심리치료의 목표: 내담자가 자신의 내적 자원을 발휘하여 스스로 어려움을 극복하도록 촉진·지원</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="cat-sub">③ 치료의 주도권</td>
+      <td class="cat-content">
+        <ul>
+          <li>심리치료는 개인에게 이미 존재하는 능력을 <span class="hl">해방</span>시켜 주는 것</li>
+          <li>치료자는 모든 해결책을 아는 권위적 존재로 임하지 않으며, <span class="hl">치료의 주도권을 내담자에게</span> 맡김</li>
+          <li>치료자 자신이나 내담자를 신뢰하지 못하게 만드는 치료 이론이나 기법은 오히려 치료 과정에 걸림돌이 되어 건강한 치료관계를 훼손함</li>
+        </ul>
+      </td>
+    </tr>
+
+    <!-- 2) 성격 이론 -->
+    <tr>
+      <td class="cat-main" rowspan="7">2) 성격 이론</td>
+      <td class="cat-sub">① 통합된 유기체<span class="cat-sub-en">Organism</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>유기체(organism): 육체와 정신을 모두 포함하는 전체로서의 개별적 생명체</li>
+          <li>신체적 기능과 감각, 감정, 동기, 사고 등의 심리적 기능이 <span class="hl">통합적으로 조직된 체계</span></li>
+          <li>환경과 상호작용하며 매순간 <span class="hl">유기체적 경험(organismic experience)</span>을 하게 되며, 이는 현상적 장(심리적 현실)을 구성함</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">② 현상적 장<span class="cat-sub-en">Phenomenal Field</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>매순간 개인의 의식에 지각되고 경험되는 모든 것 — 사적이고 주관적인 경험 세계</li>
+          <li>개인에게 실제적인 세계로 여겨지는 <span class="hl">내적 참조체계(internal frame of reference)</span> → 모든 판단과 행동의 근거</li>
+          <li>개인의 행동은 어떤 것이든 그의 주관적 현실에서 적합한 것 → 내담자 이해를 위해 내적 참조체계를 공감하는 것이 필수적</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">③ 실현 경향성<span class="cat-sub-en">Actualizing Tendency</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>Rogers가 믿은 인간의 <span class="hl">단 하나의 기본적 동기</span> — 선천적 성향</li>
+          <li>자신을 유지시키면서 잠재력을 건설적인 방향으로 성취하려는 성향</li>
+          <li>실현 경향성을 구속하는 유일한 요인은 개인이 속한 <span class="hl">환경</span> — 호의적 여건이 없으면 건강한 성장이 어려움</li>
+          <li><span class="sub">콩 비유:</span> 적절한 온도·햇빛·수분이 있는 기름진 땅에서 콩은 예정된 대로 싹을 피우고 줄기를 펼치며 열매를 맺음. 유능한 농부는 콩이 잘 자랄 수 있는 적절한 조건을 인식하여 제공하려고 노력할 뿐 콩이 자신의 가능성을 실현하도록 <span class="hl">가능한 한 내버려 둠</span> → 치료자의 역할과 동일</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">④ 자기와 자기개념<span class="cat-sub-en">Self / Self-concept</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>개인이 자신에 대해 의식적으로 지각한 것과 소중히 여기는 가치를 포함 — 현재 자신이 어떤 사람인지에 대한 인식(자아상)</li>
+          <li><span class="sub">현실적 자기(real self):</span> 현재의 자기 모습을 반영하는 실제 자아</li>
+          <li><span class="sub">이상적 자기(ideal self):</span> 다른 사람으로부터 긍정적으로 평가받기 위한 가치의 조건을 반영하는 자아</li>
+          <li><span class="sub">긍정적 존중의 욕구(positive regard):</span> 중요한 타인으로부터 사랑·인정·보살핌을 통해 자신이 소중하게 여겨지고 있음을 확인하려는 소망</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">⑤ 가치의 조건<span class="cat-sub-en">Conditions of Worth</span></td>
+      <td class="cat-content">
+        <ul>
+          <li><span class="sub">유기체적 가치화 과정(organismic valuing process):</span> 개인이 각각의 경험을 자신의 유기체적 경험에 따라 평가하는 과정 → 이 과정을 따를 때 방어의 필요성을 느끼지 못함</li>
+          <li><span class="sub">가치의 조건 형성:</span> 성장과정에서 아동이 부모의 애정을 얻기 위해 부모의 가치 조건을 내면화 → 특정 행동을 할 때만 소중하게 인정받는다는 조건 내면화</li>
+          <li>결과적으로 자신의 유기체적 경험보다 <span class="hl">긍정적 존중을 받기 위한 가치의 조건을 우선시</span>하게 됨</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">⑥ 자기와 경험의<br>불일치<span class="cat-sub-en">Incongruence</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>유기체로서 소망하며 경험하는 것들과, 자기존중감을 느끼기 위해 추구하는 것들 사이의 <span class="hl">괴리 상태</span></li>
+          <li>개인이 자신의 유기체적 경험을 무시하거나 왜곡하여 자기구조로 통합하지 못할 때 <span class="hl">심리적 부적응 발생</span></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">⑦ 무조건적 긍정적<br>존중과 온전히<br>기능하는 사람<span class="cat-sub-en">The Fully Functioning Person</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>가치의 조건을 줄이기 위해서는 타인으로부터의 <span class="hl">무조건적인 긍정적 존중(unconditional positive regard)</span>이 필요 → 자기존중감 증진</li>
+          <li>모든 경험이 무조건적으로 긍정적 존중을 받으면, 내면적 자원을 발휘하는 <span class="hl">온전히 기능하는 사람</span>으로 성장</li>
+          <li>온전히 기능하는 사람의 가장 중요한 특성: <span class="hl">경험에 대한 개방성</span> — 두려움이나 방어적 태도 없이 경험을 있는 그대로 받아들임</li>
+          <li>자기신뢰를 지니며 외부의 가치나 권위적 타인의 영향을 덜 받음</li>
+          <li>개인적인 자유 속에서 자신의 삶을 생산적이고 보람 있는 방향으로 이끌며 자신의 행동과 결과에 대한 책임을 짐</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ===== 2. 정신병리 이론 ===== -->
+<table>
+  <colgroup><col style="width:8%"><col style="width:20%"><col style="width:72%"></colgroup>
+  <tbody>
+    <tr><td colspan="3" class="section-header">2. 정신병리 이론</td></tr>
+    <tr>
+      <td class="cat-main" rowspan="5">핵심 개념</td>
+      <td class="cat-sub">① 진단 분류의 거부</td>
+      <td class="cat-content">
+        <ul>
+          <li>개인의 부적응 상태를 정신병리적 진단 범주(DSM 등)로 <span class="hl">분류하지 않음</span></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">② 부적응의 핵심 기전</td>
+      <td class="cat-content">
+        <ul>
+          <li>심리적 부적응의 핵심: <span class="hl">유기체의 전체 경험과 자기개념의 불일치</span></li>
+          <li>부모를 비롯한 사회적 환경에 의해 개인의 특성과 경험이 조건적으로 수용·존중되어 <span class="hl">실현 경향성이 억제</span>되기 때문</li>
+          <li>예: 성취욕구가 강한 사람은 여유로운 시간을 보내거나 즐기고 싶은 자신의 욕구를 부정하게 될 것임</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">③ 지각의 왜곡과<br>방어기제 발달</td>
+      <td class="cat-content">
+        <ul>
+          <li>부모의 가치 조건에 위배되는 경험과 행동은 의식에서 배제됨</li>
+          <li>가치의 조건에 근거한 긍정적 자기존중감을 얻기 위해 <span class="hl">방어기제를 발달</span>시킴 → 진실된 경험세계와 접촉하지 못한 채 세상을 부정확하고 고정된 방식으로 지각</li>
+          <li>Rogers가 제시한 방어기제: <span class="hl">합리화, 환상, 투사, 편집적인 사고</span></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">④ 부적응 심각도<br>결정 요인</td>
+      <td class="cat-content">
+        <ul>
+          <li>자기개념과 유기체적 경험의 <span class="hl">괴리가 확대될수록</span> 더 심한 불안을 경험하고 부적응 상태 심화</li>
+          <li>왜곡의 정도가 부적응 증상의 심각성을 결정함</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">⑤ 심리적 적응과<br>변화의 선순환</td>
+      <td class="cat-content">
+        <ul>
+          <li>치료적 변화는 자신의 유기체적 경험을 개방적으로 탐색하고 자각하는 것에서 시작됨</li>
+        </ul>
+        <div style="display:flex; align-items:stretch; gap:0;">
+          <div class="flow-box" style="flex:1; margin:0;">
+            <span class="flow-step">① 자기자각 증가</span> <span class="flow-desc">→ 유기체적 경험을 왜곡 없이 탐색·자각</span><br>
+            <span class="flow-step">② 자기수용 증가</span> <span class="flow-desc">→ 타인 평가에 연연하지 않고 자기 모습을 있는 그대로 신뢰</span><br>
+            <span class="flow-step">③ 자기표현 증가</span> <span class="flow-desc">→ 내면의 욕구·감정을 방어 없이 솔직하게 표출</span><br>
+            <span class="flow-step">④ 방어성 감소</span> <span class="flow-desc">→ 외적 가치 조건에 맞추어 자신을 보호하려는 가면 불필요</span><br>
+            <span class="flow-step">⑤ 개방성 증가</span> <span class="flow-desc">→ 매순간의 경험을 있는 그대로 수용 → 실현 경향성 발현</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 6px; font-size:16px; color:#5a6e5a;">
+            <span style="font-size:9px; color:#5a6e5a; writing-mode:vertical-rl; text-orientation:mixed; letter-spacing:1px;">선순환</span>
+            <svg width="18" height="80" viewBox="0 0 18 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 75 L9 5" stroke="#5a6e5a" stroke-width="1.5"/>
+              <path d="M9 5 L5 12 M9 5 L13 12" stroke="#5a6e5a" stroke-width="1.5"/>
+              <path d="M9 75 L5 68 M9 75 L13 68" stroke="#5a6e5a" stroke-width="1.5" opacity="0"/>
+            </svg>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" style="background:#f0f0f0; font-weight:700; font-size:10px; padding:6px 8px;">그림 1. 심리적 적응과 부적응 경로</td>
+    </tr>
+    <tr>
+      <td colspan="3" style="padding: 10px 8px; background:#fafafa;">
+        <table style="width:100%; font-size:10px; border-collapse:collapse; margin:0;">
+          <tr>
+            <td style="width:48%; vertical-align:top; padding-right:8px;">
+              <div style="font-weight:700; margin-bottom:4px; color:#3a3a3a;">▶ 적응 경로</div>
+              <div class="flow-box" style="margin:0; line-height:1.9;">
+                실현 경향성 → 유기체적 가치화 → <span style="font-weight:700">무조건적 존중</span> → 무조건적 자기존중 → 현실적 자기 → <span style="font-weight:700">자기와 경험 일치</span> → 잠재력 발견 및 실현 · 심리적 적응
+              </div>
+            </td>
+            <td style="width:4%"></td>
+            <td style="width:48%; vertical-align:top; padding-left:8px; border-left: none;">
+              <div style="font-weight:700; margin-bottom:4px; color:#3a3a3a;">▶ 부적응 경로</div>
+              <div class="flow-box" style="margin:0; line-height:1.9;">
+                실현 경향성 → 유기체적 가치화 ← 가치의 조건(사회·부모) → <span style="font-weight:700">조건적 존중</span> → 조건적 자기존중 → 이상적 자기 → <span style="font-weight:700">자기와 경험 불일치</span> → 심리적 문제 · 부적응
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" style="background:#f0f0f0; font-weight:700; font-size:10px; padding:6px 8px;">그림 2. 심리적 부적응 설명모델</td>
+    </tr>
+    <tr>
+      <td colspan="3" style="padding: 10px 8px; background:#fafafa;">
+        <div class="flow-box" style="font-size:10px; line-height:2;">
+          <div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
+            <span style="font-weight:700; color:#5a6e5a;">실현 경향성</span>
+            <span>↘</span>
+            <span>긍정적 존중의 욕구 → 부모의 가치 조건 내면화</span>
+            <span>↘</span>
+            <span style="font-weight:700;">자기개념 형성</span>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:6px;">
+            <div style="flex:1; border:1px solid #aac8aa; padding:5px 8px; background:#f4f8f4;">
+              <span style="font-weight:700">자기와 경험 일치</span><br>→ 잠재력 발견 및 실현
+            </div>
+            <div style="flex:1; border:1px solid #c8aaaa; padding:5px 8px; background:#fdf4f4;">
+              <span style="font-weight:700">자기와 경험 불일치</span><br>→ 심리적 문제 · 부적응
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ===== 3. 치료 이론 ===== -->
+<table>
+  <colgroup><col style="width:8%"><col style="width:20%"><col style="width:72%"></colgroup>
+  <tbody>
+    <tr><td colspan="3" class="section-header">3. 치료 이론</td></tr>
+
+    <!-- 1) 치료목표 -->
+    <tr>
+      <td class="cat-main" rowspan="2">1) 치료 목표</td>
+      <td class="cat-sub">① 핵심 목표</td>
+      <td class="cat-content">
+        <ul>
+          <li>내담자가 직면한 문제 해결뿐 아니라 <span class="hl">심리적 성장</span>을 목표로 함</li>
+          <li>현재 문제 해결보다 내담자의 성장을 촉진함으로써 현재와 미래의 문제에 더 잘 대처하도록 도움</li>
+          <li>궁극적 목표: 타인의 인정·존중을 얻기 위해 사용해 온 <span class="hl">가면을 벗고</span> 진정한 자기 자신과 접촉하여 <span class="hl">'온전히 기능하는 사람'</span>이 되도록 돕는 것</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">② 실현 경향성 발현을<br>위한 4대 조건</td>
+      <td class="cat-content">
+        <ul>
+          <li>자신의 경험에 대한 <span class="hl">개방적 태도</span></li>
+          <li><span class="hl">자기수용과 자기신뢰</span></li>
+          <li>자신의 경험과 기준에 의한 <span class="hl">평가와 판단</span></li>
+          <li>자신을 지속적으로 성장시키고자 하는 <span class="hl">의지</span></li>
+        </ul>
+      </td>
+    </tr>
+
+    <!-- 2) 치료원리 -->
+    <tr>
+      <td class="cat-main" rowspan="2">2) 치료 원리</td>
+      <td class="cat-sub">① 치료관계의 성격</td>
+      <td class="cat-content">
+        <ul>
+          <li>치료자는 과거 부모가 제공했던 <span class="hl">조건적·가치평가적인 관계와는 다른 새로운 관계</span>를 제공해야 함</li>
+          <li>치료적 변화를 이끄는 것은 구체적 기법이나 언어적 기술이 아니라, 치료자의 인격·성품에서 자연스럽게 배어 나오는 <span class="hl">'기본적 태도'</span> 자체임</li>
+          <li><span class="sub">콩 비유 (Rogers):</span> 심리치료를 식물재배에 비유 — 치료자는 내담자가 자신의 실현 경향성을 발현할 수 있는 조건을 제공하는 <span class="hl">유능한 농부</span>의 역할. 콩이 자신의 가능성을 실현하도록 직접 조작하거나 손대려는 시도는 오히려 콩의 성장을 위협함</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">② 3대 핵심조건<span class="cat-sub-en">The Core Conditions<br>Rogers, 1957</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>내담자가 유기체적 경험을 자각하고 수용하도록 돕는 세 가지 조건: <span class="hl">진실성, 무조건적인 긍정적 존중, 공감적 이해</span></li>
+          <li>이 태도들은 치료자의 인격과 성품에서 자연스럽게 펼쳐져 내담자에게 전달되는 것 — 특정 언어와 행동의 기술로 전달되는 것이 아님</li>
+        </ul>
+      </td>
+    </tr>
+
+    <!-- 3) 핵심조건 세부 -->
+    <tr>
+      <td class="cat-main" rowspan="3">3) 핵심 조건</td>
+      <td class="cat-sub">① 진실성·일치성<span class="cat-sub-en">Genuineness / Congruence</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>전문가의 역할 뒤로 자신을 숨기려 하지 않고, 내면과 외면이 <span class="hl">일치</span>하는 꾸밈없는 모습을 나타내는 것</li>
+          <li>진실성과 일치성의 조건에 도달하는 것은 쉬운 일이 아님 — <span class="hl">치료자의 자기이해와 자기수용이 선행</span>되어야 함 (Rogers, 1966)</li>
+          <li>자신의 모든 느낌·생각을 다 노출해야 한다는 의미는 아님 — 관계에서 불편하고 혼란스러운 경험도 자각을 부정하지 않고 열린 자세로 수용하며 투명하게 표현하려는 태도</li>
+          <li>치료자가 자신의 약점까지 숨김없이 드러낼 때 내담자 역시 약점을 공개하고 현재 상태를 수용하게 됨</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">② 무조건적인<br>긍정적 존중<span class="cat-sub-en">Unconditional Positive Regard</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>내담자의 생각·감정·행동에 대해 <span class="hl">어떤 판단이나 평가도 내리지 않는</span> 치료자의 순수한 보살핌·조건 없는 수용(acceptance)</li>
+          <li>괴로움·적개심·부적절한 감정·방어적 태도를 나타낼 때에도 긍정적이고 성숙한 감정을 표현할 때와 <span class="hl">똑같이 수용</span> (Rogers, 1966)</li>
+          <li>의구심 없이 순수하게 받아들이는 태도 → 신뢰 구축, 내담자가 내면을 깊이 탐색하며 잘못된 생각을 스스로 바로잡도록 도움</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">③ 공감적 이해<span class="cat-sub-en">Empathic Understanding</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>치료자가 마치 내담자가 된 것처럼 그의 심정을 느끼고, 내담자가 경험하는 감정들과 개인적 의미들을 <span class="hl">정확하게 감지</span>하는 것</li>
+          <li>감정에 빠져들지 않으면서 감정을 자신의 것처럼 느끼기 위해 안정된 자기정체감이 필요 — <span class="hl">'마치 내담자인 것처럼(as if)'</span> 경험세계로 들어가야 함</li>
+          <li>치료자와 내담자가 신뢰 속에서 서로를 잘 이해하게 되면, <span class="hl">이심전심(以心傳心)</span>의 상태에서 깊은 교감이 이루어질 수 있음</li>
+          <li>Rogers(1982): 공감적 이해는 진실성과 무조건적인 긍정적 존중이 먼저 이루어져야 가능함</li>
+          <li><em>"정확한 공감적 이해는 치료자가 완전하게 내담자의 세계에 들어가는 것을 의미한다. 그것은 '지금–여기'에서 내담자가 경험하는 감정에 순간순간 민감함을 의미한다." — Rogers(1966)</em></li>
+        </ul>
+      </td>
+    </tr>
+
+    <!-- 4) 치료기법 -->
+    <tr>
+      <td class="cat-main" rowspan="7">4) 치료 기법</td>
+      <td class="cat-sub">기술적 특성</td>
+      <td class="cat-content">
+        <ul>
+          <li>특정한 문제해결보다 <span class="hl">내담자 자체</span>에 초점을 맞추며, 구체적 기법보다 <span class="hl">치료자의 기본적 태도</span>를 중시</li>
+          <li><span class="hl">'무엇을 할 것인가(Doing)'</span>보다 <span class="hl">'어떤 존재이어야 하는지(Being)'</span>에 초점</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">① 진실하려고<br>노력하기</td>
+      <td class="cat-content">
+        <ul>
+          <li>치료자 자신을 먼저 잘 바라보고, 속마음과 일치하는 말과 행동을 나타내는 것</li>
+          <li>예: "내가 당신 마음을 충분히 이해하지는 못하지만, 그러한 일들이 당신에게 커다란 상처가 되었을 것 같아요" — 진솔한 표현이 신뢰를 줌</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">② 적극적 경청<span class="cat-sub-en">Active Listening</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>내담자를 마주 보고 몸을 기울이며 자연스럽게 눈 맞춤을 하는 것뿐 아니라, 언급된 내용과 관련해 적절한 표정이나 행동적 반응을 나타내는 경청 기술</li>
+          <li>내담자로 하여금 치료자가 진정한 관심과 주의를 기울이고 있음을 느끼게 함</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">③ 공감적 반영하기<span class="cat-sub-en">Reflecting</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>치료자가 내담자의 내면세계에 대해 이해한 바(마음에 비쳐진 내담자의 모습)를 전달하여 보여주는 것</li>
+          <li>초기: 언어적 전달내용에 근거해 두드러진 생각·감정 반영</li>
+          <li>이해가 깊어지면: 언어 표현 이면에 깔린 생각·감정에 대한 <span class="hl">공감적 추측</span>과 정서적 변화를 포착하여 반영</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">④ '지금-여기'의<br>즉시성<span class="cat-sub-en">Immediacy / Here and Now</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>치료 과정에서 치료자와 내담자가 느끼는 <span class="hl">직접적이고 생생한 경험</span>을 중시</li>
+          <li>내담자를 변화시키는 강력한 상호작용은 직접 경험되는 감정과 생각을 다룰 때 일어나므로 '지금-여기'의 체험을 다루는 것이 중요</li>
+          <li>예: <em>"지금 어떤 느낌이 드세요?"</em> &nbsp;<em>"당신의 말을 들으니 ……한 감정이 느껴지네요."</em> — 내담자의 즉시적 경험을 탐색하고 전달하는 것이 바람직함</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">⑤ 자기 노출하기<span class="cat-sub-en">Self-disclosure</span></td>
+      <td class="cat-content">
+        <ul>
+          <li>치료자가 의도적으로 자신의 생각과 경험을 내담자에게 내어 보이는 것</li>
+          <li>내담자가 안전한 상황에서 자신의 내면세계를 치료자의 내면세계와 진지하게 비교하도록 함으로써, 과거 위협적으로 느껴져 시도하지 못했던 비교를 통해 자신의 생각을 변화시킬 수 있게 함</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-sub">⑥ 치료자의<br>개성 살리기</td>
+      <td class="cat-content">
+        <ul>
+          <li>고정된 공통적 행동방식이 없으며, 치료자의 성격과 스타일에 따라 다양한 창조적 방식으로 치료하기를 권함</li>
+          <li>핵심조건을 토대로 삼되 치료자·내담자·상황 특성에 따라 유연하게 진행</li>
+          <li>권위주의적 위선과 경직된 <span class="hl">도그마(dogma)</span>에 빠지는 것을 철저히 경계함</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+      </div></div>
+    </section>
+
+    <section class="panel" id="quiz">
+      
+      <div class="quiz-card">
+        <div class="quiz-top"><span>인간중심상담 · 연습문제</span><span id="counter"></span></div>
+        <div class="progress"><span id="bar"></span></div>
+        <div class="qnum" id="qnum"></div>
+        <div class="question" id="question"></div>
+        <div class="box" id="box" style="display:none"></div>
+        <div class="options" id="options"></div>
+        <div class="exp" id="exp"></div>
+        <div class="nav">
+          <button class="btn sub" onclick="moveQ(-1)">← 이전</button>
+          <button class="btn" onclick="moveQ(1)">다음 →</button>
+        </div>
+      </div>
+      <div class="all-list" id="allList"></div>
+    </section>
+  </div>
+
+<script>
+function openTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+const PQ_DATA = [
+  {
+    q: "1. 인간중심 상담이론에 관한 설명으로 옳지 않은 것은?",
+    opts: [
+      "구체적인 상담기법보다 상담자의 태도를 더 중요시한다.",
+      "인간은 자기실현경향성을 가지고 있는 존재이다.",
+      "철학적 배경은 실증주의이다.",
+      "로저스(C. Rogers)에 의해 창시된 상담이론이다.",
+      "비지시적 상담 또는 내담자중심 상담으로 불리어졌다."
+    ],
+    answer: 2,
+    exp: "정답 ③ · 인간중심상담의 철학적 배경은 실존주의·현상학이다. 실증주의는 행동주의의 기반."
+  },
+  {
+    q: "2. 인간중심 상담이론에 관한 설명으로 옳지 않은 것은?",
+    opts: [
+      "유기체적 경험과 자기개념 간의 불일치는 심리적 부적응의 원인이다.",
+      "모든 인간은 자기실현경향성을 가지고 태어난다.",
+      "내담자에 대한 진실성, 무조건적 긍정적 존중, 공감적 이해를 중시한다.",
+      "궁극적인 목표는 내담자가 온전히 기능하도록 돕는 것이다.",
+      "현실적 자기는 다른 사람으로부터 긍정적으로 평가받기 위한 가치의 조건을 반영한다."
+    ],
+    answer: 4,
+    exp: "정답 ⑤ · 가치의 조건을 반영하는 것은 '이상적 자기'가 아니라 타인 기대를 내면화한 결과다. 현실적 자기(real self)는 현재 자신이 실제로 경험하는 자기."
+  },
+  {
+    q: "3. 인간중심상담에 관한 설명으로 옳지 않은 것은?",
+    opts: [
+      "이상적 자기와 현실적 자기 간의 괴리가 큰 경우 심리적 부적응이 발생한다.",
+      "모든 인간에게 실현경향성이 있다고 보는 긍정적 인간관을 지닌다.",
+      "상담자가 내담자에 대해 무조건적 긍정적 존중의 태도를 지니는 것을 강조한다.",
+      "아동은 부모의 기대와 가치를 내면화하여 현실적인 자기를 형성한다.",
+      "충분히 기능하는 사람은 경험에 대해 개방적이며 매 순간의 삶에 충실하다."
+    ],
+    answer: 3,
+    exp: "정답 ④ · 아동이 부모의 기대와 가치를 내면화하면 가치의 조건화가 발생하여 '이상적 자기(ideal self)'가 형성된다. 현실적 자기(real self)가 아님."
+  },
+  {
+    q: "4. 인간중심상담 이론에 관한 설명으로 옳지 않은 것은?",
+    opts: [
+      "자아는 성격의 조화와 통합을 위해 노력하는 원형이다.",
+      "현재 경험이 자기개념과 불일치할 때 불안을 경험하게 된다.",
+      "실현화 경향성은 자기를 보전, 유지하고 향상시키고자 하는 선천적 성향이다.",
+      "가치의 조건화는 주요 타자로부터 긍정적 존중을 받기 위해 그들이 원하는 가치와 기준을 내면화하는 것이다.",
+      "현상학적 장은 특정 순간에 개인이 지각하고 경험하는 모든 것을 뜻한다."
+    ],
+    answer: 0,
+    exp: "정답 ① · '자아는 성격의 조화와 통합을 위해 노력하는 원형'은 융(Jung)의 개념. 로저스에서 자기(self)는 현상학적 장의 일부로, 자신에 대한 지각의 총체이다."
+  },
+  {
+    q: "5. 인간중심 상담에 관한 설명으로 옳은 것을 모두 고른 것은?",
+    box: "ㄱ. 현재 경험이 자기개념과 불일치할 때 불안을 경험하게 된다.\nㄴ. 내적 경험을 무시하고 부모의 기준에 맞추는 것이 부적응의 원인이다.\nㄷ. 자기실현 경향성은 자기를 보존·유지·향상시키고자 하는 후천적인 상위의 욕구다.\nㄹ. 무조건적 사랑을 받은 아동은 자신의 특성을 선택적으로 수용한다.\nㅁ. 상담자는 내담자의 감정·사고·행동에 대하여 평가를 하지 않는다.",
+    opts: ["ㄱ, ㄴ", "ㄷ, ㄹ", "ㄱ, ㄴ, ㅁ", "ㄷ, ㄹ, ㅁ", "ㄱ, ㄴ, ㄷ, ㅁ"],
+    answer: 2,
+    exp: "정답 ③ ㄱ·ㄴ·ㅁ\nㄷ ✗ 실현경향성은 선천적(후천적이 아님)\nㄹ ✗ 무조건적 사랑을 받은 아동은 자신의 모든 특성을 있는 그대로 수용함 (선택적이 아님)"
+  },
+  {
+    q: "6. 인간중심 상담이론에서 충분히 기능하는 사람의 특징으로 옳은 것을 모두 고른 것은?",
+    box: "ㄱ. 창의성\nㄴ. 자신에 대한 신뢰\nㄷ. 경험에 대한 개방성\nㄹ. 실존적인 삶에 대한 가치부여",
+    opts: ["ㄱ, ㄴ, ㄷ", "ㄱ, ㄴ, ㄹ", "ㄱ, ㄷ, ㄹ", "ㄴ, ㄷ, ㄹ", "ㄱ, ㄴ, ㄷ, ㄹ"],
+    answer: 4,
+    exp: "정답 ⑤ 전부 해당\n충분히 기능하는 사람(fully functioning person): 경험에 개방적 / 실존적 삶 / 자신 신뢰 / 자유의 경험 / 창의성"
+  },
+  {
+    q: "7. 인간중심상담이 효과적으로 진행될 때, 내담자에게 나타나는 변화로 옳지 않은 것은?",
+    opts: ["자기자각 증가", "자기수용 증가", "자기표현 증가", "자기개방 증가", "자기방어 증가"],
+    answer: 4,
+    exp: "정답 ⑤ · 상담이 효과적으로 진행될 때 자기방어는 감소한다. 자기자각·수용·표현·개방은 모두 증가."
+  },
+  {
+    q: "8. 인간중심 상담이론에 관한 설명으로 옳은 것을 모두 고른 것은?",
+    box: "ㄱ. 자기 개념과 유기체적 경험의 불일치가 클 때 심리적 부적응이 발생한다.\nㄴ. 인간은 긍정적인 변화를 향한 내면적 동기와 잠재능력을 지니고 있는 존재이다.\nㄷ. 개인의 객관적인 경험과 인식을 중시하는 현상학적인 입장에 근거한다.\nㄹ. 상담목표는 내담자가 충분히 기능하는 사람이 되도록 돕는 것이다.",
+    opts: ["ㄱ, ㄴ", "ㄱ, ㄷ", "ㄱ, ㄴ, ㄹ", "ㄴ, ㄷ, ㄹ", "ㄱ, ㄴ, ㄷ, ㄹ"],
+    answer: 2,
+    exp: "정답 ③ ㄱ·ㄴ·ㄹ\nㄷ ✗ 현상학은 '주관적' 경험을 중시. '객관적'이 아님."
+  },
+  {
+    q: "9. 인간중심 상담에서 가치의 조건화에 관한 설명으로 옳지 않은 것은?",
+    opts: [
+      "실현경향성 성취를 방해한다.",
+      "이상적 자기와 현실적 자기의 거리를 가까워지게 한다.",
+      "중요한 타인의 가치를 내면화한 결과이다.",
+      "주관적으로 경험하는 사실을 왜곡하고 부정하게 만든다.",
+      "충분히 기능하는 인간으로의 발달을 저해한다."
+    ],
+    answer: 1,
+    exp: "정답 ② · 가치의 조건화는 이상적 자기와 현실적 자기의 거리를 멀어지게 한다. 타인 기대에 맞추려는 이상적 자기와 실제 경험하는 현실적 자기 사이에 불일치가 커지기 때문."
+  },
+  {
+    q: "10. 인간중심상담에서 제시한 심리적으로 건강한 사람의 특성으로 옳지 않은 것은?",
+    opts: [
+      "자기결정성이 높다.",
+      "경험에 개방적이다.",
+      "생각, 감정, 행동이 일치를 이룬다.",
+      "자신이 처한 환경에서 충실히 살아간다.",
+      "자신에게 중요한 사람의 가치를 조건화한다."
+    ],
+    answer: 4,
+    exp: "정답 ⑤ · 가치의 조건화는 심리적 부적응의 원인. 건강한 사람은 타인의 가치를 무조건 내면화하지 않고 자신의 유기체적 경험을 신뢰한다."
+  },
+  {
+    q: "11. 인간중심상담의 치료적 접근으로 옳은 것은?",
+    opts: [
+      "행동변화계획",
+      "성장촉진적 관계",
+      "꿈의 분석",
+      "가족력 분석",
+      "비합리적 신념의 탐색"
+    ],
+    answer: 1,
+    exp: "② 성장촉진적 관계 · 인간중심상담은 특정 기법보다 상담자의 태도(진실성·무조건적 긍정적 존중·공감적 이해)를 통한 성장촉진적 관계 자체가 치료 핵심."
+  },
+  {
+    q: "12. 인간중심상담의 개념과 용어를 옳게 연결한 것은?",
+    box: "ㄱ. 가설적이고 이상적 사회의 궁극적 목표로 무조건적 존중을 통하여 실현됨\nㄴ. 인간이 자신을 유지시키면서 잠재력을 건설적인 방향으로 성취하려는 선천적인 성향\nㄷ. 자신의 개인적 특성 또는 타인과의 관계 속에서 형성된 특징에 대해 스스로 가지고 있는 개념",
+    box2: "(a) 충분히 기능하는 인간\n(b) 유기체의 가치화 과정\n(c) 실현경향성\n(d) 진실성\n(e) 자기개념",
+    opts: [
+      "ㄱ-a, ㄴ-b, ㄷ-c",
+      "ㄱ-a, ㄴ-c, ㄷ-e",
+      "ㄱ-b, ㄴ-c, ㄷ-a",
+      "ㄱ-b, ㄴ-d, ㄷ-e",
+      "ㄱ-c, ㄴ-d, ㄷ-a"
+    ],
+    answer: 1,
+    exp: "정답 ② ㄱ-a, ㄴ-c, ㄷ-e\nㄱ 충분히 기능하는 인간(a) — 무조건적 존중 환경에서 실현되는 이상적 인간상\nㄴ 실현경향성(c) — 잠재력을 건설적으로 성취하려는 선천적 성향\nㄷ 자기개념(e) — 자신에 대한 스스로의 지각과 개념"
+  },
+  {
+    q: "13. 인간중심 상담에서 위기 상황 시 우선적으로 할 수 있는 개입은?",
+    opts: [
+      "즉각적으로 문제해결 개입을 한다.",
+      "위기 수준에 상관없이 지시를 한다.",
+      "행동과 태도의 부조화를 다룬다.",
+      "고통을 충분히 표현할 수 있도록 경청한다.",
+      "신속하고 정확한 심리평가를 한다."
+    ],
+    answer: 3,
+    exp: "④ 경청 · 인간중심상담은 기법보다 태도 우선. 위기 상황에서도 내담자가 고통을 충분히 표현할 수 있도록 공감적 경청이 우선된다."
+  },
+  {
+    q: "14. 인간중심 상담의 '공감적 이해'에 대한 설명으로 옳은 것은?",
+    opts: [
+      "상담자가 자신을 숨기려 하지 않고 꾸밈없이 자신의 모습을 있는 그대로 나타내는 것",
+      "내담자의 생각, 감정, 행동에 대하여 어떤 판단이나 평가도 내리지 않는 것",
+      "상담자가 내담자의 주관적인 경험세계를 경험하고 깊이 있게 이해하는 것",
+      "상담자가 상담과정에서 자기 자신으로 존재하는 것으로 일치성이라고 불리기도 함"
+    ],
+    answer: 2,
+    exp: "③ 공감적 이해 · 내담자의 주관적 경험세계를 마치 자신의 것처럼 경험하되 자신을 잃지 않는 것\n① 진실성(일치성) / ② 무조건적 긍정적 존중 / ④ 진실성(일치성)"
+  },
+  {
+    q: "15. 인간이 자신의 경험에 대해 가치를 부여할 때 특정 경험이 자기를 충족하면 긍정적, 그렇지 않으면 부정적 가치로 평가하는 과정은?",
+    opts: [
+      "현상학적 장",
+      "자기와 자아개념",
+      "유기체 가치화 과정",
+      "충분히 기능하는 인간"
+    ],
+    answer: 2,
+    exp: "③ 유기체 가치화 과정 · 유기체 가치화 과정을 따르면 자기 경험과 일치하여 편안함·안정감을 느끼고, 타인의 가치를 내면화하면 자기 소외가 발생한다."
+  },
+  {
+    q: "16. 인간중심치료에서 내담자의 생각, 감정, 행동에 대하여 어떠한 판단이나 평가도 내리지 않는 상담자의 순수한 보살핌을 의미하는 것은?",
+    opts: [
+      "공감적 이해",
+      "진실성",
+      "일치성",
+      "무조건적 긍정적 존중"
+    ],
+    answer: 3,
+    exp: "④ 무조건적 긍정적 존중 · 내담자를 있는 그대로 수용하고 판단하지 않는 태도\n① 공감적 이해: 내담자 경험세계 이해 / ②③ 진실성·일치성: 상담자 자신의 솔직한 존재"
+  },
+  {
+    q: "17. 인간중심치료에서 상담자가 내담자와의 상담관계에서 순간순간 경험하는 감정을 있는 그대로 솔직히 인정하고 표현하는 태도를 의미하는 용어는?",
+    opts: [
+      "일치성",
+      "무조건적 긍정적 존중",
+      "공감적 이해",
+      "직면"
+    ],
+    answer: 0,
+    exp: "① 일치성(진실성) · 상담자가 경험하는 감정을 솔직하게 인정하고 표현하는 태도\n② 무조건적 긍정적 존중: 판단 없는 수용 / ③ 공감적 이해: 내담자 경험세계 이해 / ④ 직면: 불일치 지적"
+  },
+  {
+    q: "18. 인간중심상담에 대한 설명으로 옳지 않은 것은?",
+    opts: [
+      "칼 로저스에 의해 발전된 인본주의적 심리치료이다.",
+      "내담자가 스스로 결정을 내릴 수 없는 경우 상담자가 의사결정을 대신한다.",
+      "충분히 기능하는 인간은 지금-여기에 충실할 수 있다.",
+      "로저스는 인간에게 있는 단 하나의 기본적 동기가 실현경향성이라고 믿었다."
+    ],
+    answer: 1,
+    exp: "정답 ② · 인간중심상담은 내담자 스스로의 결정과 선택을 존중한다. 상담자가 의사결정을 대신하는 것은 인간중심상담의 원칙에 반함."
+  },
+  {
+    q: "19. 다음 상담 목표에 해당하는 상담 이론은?\n\"내담자가 충분히 기능하는 인간이 되도록 돕는 것. 자신의 개성과 능력을 최대한으로 발휘하면서 자기실현의 삶을 살게 함.\"",
+    opts: [
+      "게슈탈트 상담",
+      "아들러 심리치료",
+      "인간중심상담",
+      "행동주의 상담"
+    ],
+    answer: 2,
+    exp: "③ 인간중심상담 · 충분히 기능하는 인간(fully functioning person)이 되는 것이 핵심 목표\n게슈탈트: 미해결과제 해소 / 아들러: 사회적 관심·생활양식 수정 / 행동주의: 행동 변화"
+  },
+  {
+    q: "20. 인간중심상담의 상담과정이나 기법에 관한 설명으로 옳지 않은 것은?",
+    opts: [
+      "상담자는 내담자를 대신하여 상담에 관하여 결정하지 않는다.",
+      "상담자는 공감적인 자세를 유지하고 자신의 내면세계는 노출하지 않는다.",
+      "상담자는 내담자가 스스로 자신을 이해하고 수용하도록 분위기를 만든다.",
+      "상담자는 내담자의 감정, 사고, 행동에 대하여 어떠한 평가도 하지 않는다."
+    ],
+    answer: 1,
+    exp: "정답 ② · 인간중심상담에서 상담자는 진실성(일치성)을 통해 자신의 내면세계를 적절히 노출한다. 자신을 숨기지 않는 것이 핵심 태도."
+  },
+  {
+    q: "21. 다음 현상을 설명하는 인간중심상담의 개념은?",
+    box: "완벽주의 성향의 어머니는 민지가 정리정돈을 할 때마다 칭찬했다. 성격이 털털한 민지는 정리정돈의 필요성을 느끼지 못하지만 어머니의 인정을 받기 위해 온 집안 청소를 한다. 친구 만나는 것을 좋아하지만 청소를 하다보면 시간이 없다.",
+    opts: ["동일시", "일치성", "가치의 조건", "자기실현 경향성"],
+    answer: 2,
+    exp: "③ 가치의 조건 · 중요한 타인(어머니)의 가치와 기준을 내면화하여 자신의 유기체적 경험을 무시하는 것 → 가치의 조건화"
+  },
+  {
+    q: "22. 다음 대화에 나타나 있는 인간중심 상담자의 개입 반응은?",
+    box: "내담자: 제가 나쁘게 살지 않았는데 왜 이렇게 나쁜 일들이 제게 일어나는지 모르겠어요. 내가 더 잘했으면 떠나지 않았을 텐데 라는 생각이 들면 너무 힘들어요.\n상담자: 내가 더 잘했다면 막을 수 있었을 거란 죄책감이 들면서도 그 친구가 원망스럽고 왜 이런 일이 나에게 일어났을까 라는 생각이 들어 의아하고 억울하겠어요.",
+    opts: ["직면", "공감적 반영", "개방형 질문", "정보제공"],
+    answer: 1,
+    exp: "② 공감적 반영 · 내담자의 복합적인 감정(죄책감·원망·억울함)을 상담자가 정확하게 되비춰주는 공감적 반영"
+  },
+  {
+    q: "23. 인간중심상담의 기본 개념에 해당하는 것을 모두 고른 것은?",
+    box: "ㄱ. 사회적 관심\nㄴ. 충분히 기능하는 사람\nㄷ. 자기실현 경향성\nㄹ. 미해결 과제\nㅁ. 유기체로서의 인간",
+    opts: ["ㄱ, ㄹ", "ㄷ, ㄹ", "ㄴ, ㄷ, ㅁ", "ㄱ, ㄴ, ㄷ, ㅁ"],
+    answer: 2,
+    exp: "정답 ③ ㄴ·ㄷ·ㅁ\nㄱ 사회적 관심 → 아들러 개인심리학\nㄹ 미해결 과제 → 게슈탈트 상담"
+  }
+];
+
+let current = 0;
+let answered = new Set();
+let selectedAnswers = {};
+
+function renderQuiz() {
+  const item = PQ_DATA[current];
+  document.getElementById('counter').textContent = `${current + 1} / ${PQ_DATA.length}`;
+  document.getElementById('bar').style.width = `${((current + 1) / PQ_DATA.length) * 100}%`;
+  document.getElementById('qnum').textContent = `Q${current + 1}`;
+  document.getElementById('question').textContent = item.q.replace(/^\d+\.\s*/, '');
+  const box = document.getElementById('box');
+  if (item.box) { box.style.display = 'block'; box.textContent = item.box; }
+  else { box.style.display = 'none'; box.textContent = ''; }
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  item.opts.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = `<strong>${i + 1}.</strong> ${opt}`;
+    b.onclick = () => choose(i);
+    opts.appendChild(b);
+  });
+  const exp = document.getElementById('exp');
+  exp.className = 'exp';
+  exp.textContent = item.exp;
+  if (answered.has(current)) showAnswer();
+}
+
+function choose(i) {
+  answered.add(current);
+  selectedAnswers[current] = i;
+  showAnswer(i);
+}
+
+function showAnswer(chosen) {
+  const item = PQ_DATA[current];
+  const selected = chosen !== undefined ? chosen : selectedAnswers[current];
+
+  document.querySelectorAll('.opt').forEach((b, i) => {
+    b.disabled = true;
+    b.classList.remove('correct', 'wrong');
+
+    // 정답 선택지는 항상 녹색
+    if (i === item.answer) {
+      b.classList.add('correct');
+    }
+
+    // 사용자가 고른 선택지가 정답이 아니면, 사용자가 고른 선택지는 빨간색
+    if (selected !== undefined && i === selected && i !== item.answer) {
+      b.classList.add('wrong');
+    }
+  });
+
+  document.getElementById('exp').classList.add('show');
+}
+
+function moveQ(delta) {
+  current = Math.max(0, Math.min(PQ_DATA.length - 1, current + delta));
+  renderQuiz();
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleAll() {
+  const list = document.getElementById('allList');
+  list.classList.toggle('show');
+  if (!list.dataset.rendered) {
+    list.innerHTML = PQ_DATA.map((item, idx) => `
+      <div class="all-q">
+        <h3>Q${idx + 1}. ${item.q.replace(/^\d+\.\s*/, '')}</h3>
+        ${item.box ? `<div class="box">${item.box}</div>` : ''}
+        <ol>${item.opts.map(o => `<li>${o}</li>`).join('')}</ol>
+        <div class="answer">정답: ${item.answer + 1}번
+${item.exp}</div>
+      </div>`).join('');
+    list.dataset.rendered = '1';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', renderQuiz);
+</script>
+</body>
+</html>
