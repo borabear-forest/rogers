@@ -184,9 +184,22 @@
 }
 </style>
 
-<link rel="icon" type="image/png" href="rogers.png">
-<link rel="shortcut icon" type="image/png" href="rogers.png">
-<link rel="apple-touch-icon" href="rogers.png">
+<!-- ✅ Favicon – 크롬·엣지·네이버·iOS·삼성 전용 선언 -->
+<!-- 브라우저 탭 -->
+<link rel="icon" type="image/x-icon"  href="favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16"  href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32"  href="favicon-32x32.png">
+<!-- Android Chrome 홈화면 추가 / PWA -->
+<link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
+<!-- iOS Safari 홈화면 추가 (iPhone · iPad) -->
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<!-- 삼성 인터넷 / 네이버 앱 홈화면 -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="인간중심상담">
+<!-- PWA 매니페스트 (삼성·크롬 홈화면 아이콘 이름·색상) -->
+<link rel="manifest" href="site.webmanifest">
 </head>
 <body>
   <div class="wrap">
